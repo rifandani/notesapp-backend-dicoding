@@ -5,7 +5,7 @@ const ProducerService = {
     const connection = await amqp.connect(process.env.RABBITMQ_SERVER);
 
     // objek channel yg dgunakan untuk memanggil API dlam mengoperasikan transaksi protokol AMQP
-    const channel = connection.createChannel();
+    const channel = await connection.createChannel();
 
     // membuat channel baru bila channel yang diperiksa tidak ada
     await channel.assertQueue(queue, {

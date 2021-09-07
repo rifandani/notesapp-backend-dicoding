@@ -4,18 +4,5 @@
       "path": "."
     }
   ],
-  "settings": {},
-  "launch": {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Launch Program",
-        "type": "node",
-        "request": "launch",
-        "skipFiles": ["<node_internals>/**"],
-        "program": "d:\\Web Dev Studio\\DICODING\\belajar-fundamental-aplikasi-backend\\notes-app-back-end\\src\\server.js",
-        "__workspaceFolder": "d:\\Web Dev Studio\\DICODING\\belajar-fundamental-aplikasi-backend\\notes-app-back-end"
-      }
-    ]
-  }
+  "settings": {}
 }
