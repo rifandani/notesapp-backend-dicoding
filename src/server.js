@@ -40,6 +40,7 @@ const init = async () => {
   const storageService = new StorageService(
     path.resolve(__dirname, 'api/uploads/file/images'),
   );
+  // const s3StorageService = new S3StorageService();
 
   const server = Hapi.server({
     port: process.env.PORT,
