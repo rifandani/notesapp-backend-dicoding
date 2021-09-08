@@ -4,21 +4,9 @@ const { nanoid } = require('nanoid');
 const InvariantError = require('../../exceptions/InvariantError');
 
 class CollaborationsService {
-  constructor() {
+  constructor(cacheService) {
     this._pool = new Pool();
-  }
-
-  async verifyCollaborator(noteId, userId) {
-    const query = {
-      text: 'SELECT * FROM collaborations WHERE note_id = $1 AND user_id = $2',
-      values: [noteId, userId],
-    };
-
-    const result = await this._pool.query(query);
-
-    if (!result.rowCount) {
-      throw new InvariantError('Kolaborasi gagal diverifikasi');
-    }
+    this._cacheService = cacheService;
   }
 
   async addCollaboration(noteId, userId) {
@@ -34,6 +22,9 @@ class CollaborationsService {
       throw new InvariantError('Kolaborasi gagal ditambahkan');
     }
 
+    // agar cache yang disimpan dihapus ketika terjadi perubahan data
+    await this._cacheService.delete(`notes:${userId}`);
+
     return result.rows[0].id;
   }
 
@@ -47,6 +38,22 @@ class CollaborationsService {
 
     if (!result.rowCount) {
       throw new InvariantError('Kolaborasi gagal dihapus');
+    }
+
+    // agar cache yang disimpan dihapus ketika terjadi perubahan data
+    await this._cacheService.delete(`notes:${userId}`);
+  }
+
+  async verifyCollaborator(noteId, userId) {
+    const query = {
+      text: 'SELECT * FROM collaborations WHERE note_id = $1 AND user_id = $2',
+      values: [noteId, userId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new InvariantError('Kolaborasi gagal diverifikasi');
     }
   }
 }
