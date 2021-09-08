@@ -82,3 +82,16 @@ Untuk Management Queue RabbitMQ
 ```console
 localhost:5672
 ```
+
+## RedisInsight
+
+Untuk Management Redis menggunakan RedisInsight
+
+- Akses melalui browser
+
+```console
+localhost:8001
+```
+
+- Masukkan Host: `localhost` atau local ip address device kalian.
+- Cara mengetahui local ip address dengan command `ipconfig`

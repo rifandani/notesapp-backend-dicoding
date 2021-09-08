@@ -21,19 +21,10 @@ services:
     restart: always
     ports:
       - '8090:8080'
+    networks:
+      - backend
     depends_on:
       - postgres
-    networks:
-      - backend
-
-  redis:
-    container_name: redis
-    image: redis:latest
-    restart: always
-    ports:
-      - '6379:6379'
-    networks:
-      - backend
 
   rabbitmq:
     container_name: rabbitmq
@@ -45,9 +36,65 @@ services:
     networks:
       - backend
 
+  redis:
+    container_name: redis
+    image: redis:latest
+    # image: redislabs/redismod
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+      - backend
+
+  redisinsight:
+    container_name: redisinsight
+    image: redislabs/redisinsight:latest
+    restart: always
+    ports:
+      - '8001:8001'
+    volumes:
+      - redis-insight:/db
+      # - ./Users/rifandani/data/redisinsight:/db
+    networks:
+      - backend
+    depends_on:
+      - redis
+      # - graph
+      # - search
+      # - timeseries
+
+  # graph:
+  #   image: redislabs/redisgraph
+  #   ports:
+  #     - "6380:6379"
+  #   restart: on-failure
+
+  # search:
+  #   image: redislabs/redisearch:latest
+  #   ports:
+  #     - "6381:6379"
+  #   restart: on-failure
+
+  # timeseries:
+  #   image: redislabs/redistimeseries
+  #   ports:
+  #     - "6382:6379"
+  #   restart: on-failure
+
+  # redis-commander:
+  #   container_name: redis-commander
+  #   image: rediscommander/redis-commander:latest
+  #   restart: always
+  #   environment:
+  #   - REDIS_HOSTS=local:redis:6379
+  #   ports:
+  #   - "8081:8081"
+
 volumes:
   postgres-data:
     name: postgres-data
+  redis-insight:
+    name: redis-insight
 
 networks:
   backend:
